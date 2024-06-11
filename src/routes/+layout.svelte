@@ -3,6 +3,7 @@
   import "../app.css";
   import type { LayoutData } from "./$types";
   import { products } from "$lib/stores/product";
+  import Navbar from "$lib/components/Navbar.svelte";
 
   export let data: LayoutData;
 
@@ -12,4 +13,7 @@
   });
 </script>
 
-<slot />
+<div class="max-w-7xl mx-auto min-h-screen px-5">
+  <Navbar />
+  <slot />
+</div>
