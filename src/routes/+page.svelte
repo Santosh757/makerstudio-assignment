@@ -1,9 +1,11 @@
 <script lang="ts">
+  import FilterAndSort from "$lib/components/FilterAndSort.svelte";
   import { products } from "$lib/stores/product";
 </script>
 
 <main class="mt-10">
-  <div class="grid grid-cols-3 gap-8">
+  <FilterAndSort />
+  <div class="grid grid-cols-3 gap-8 mt-8">
     {#each $products as product}
       <a
         href={`/${product.id}`}
