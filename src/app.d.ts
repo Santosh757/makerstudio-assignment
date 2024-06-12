@@ -24,3 +24,5 @@ interface Product {
 	category: string
 	rating: Rating
 }
+
+type Category = string
