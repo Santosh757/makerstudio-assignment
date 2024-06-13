@@ -1,7 +1,23 @@
 <script lang="ts">
   import { page } from "$app/stores";
+  import { cartItems } from "$lib/stores/product";
 
   let product: Product = $page.data.product;
+
+  const addToCart = (id: number) => {
+    const cartItem = $cartItems.find((item: CartItem) => item.id === id);
+    if (cartItem) {
+      $cartItems = $cartItems.map((item: CartItem) => {
+        if (item.id === id) {
+          item.quantity++;
+        }
+        return item;
+      });
+    } else {
+      $cartItems = [...$cartItems, { id, quantity: 1 }];
+    }
+    console.log($cartItems);
+  };
 </script>
 
 <div class="pt-20 pb-10 flex space-x-24">
@@ -22,7 +38,9 @@
         ({product.rating.count} ratings)
       </span>
     </div>
-    <button class="mt-5 px-6 py-2.5 rounded-lg font-semibold bg-yellow-400">
+    <button
+      on:click={() => addToCart(product.id)}
+      class="mt-5 px-6 py-2.5 rounded-lg font-semibold bg-yellow-400">
       Add to cart
     </button>
   </section>
