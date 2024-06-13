@@ -26,3 +26,8 @@ interface Product {
 }
 
 type Category = string
+
+interface CartItem {
+	id: number
+	quantity: number
+}
