@@ -2,14 +2,14 @@
   import { cartItems, products } from "$lib/stores/product";
   import toast from "svelte-french-toast";
 
-  const getProduct = (item: CartItem) => {
-    return $products.find((product) => product.id === item.id);
+  const getProduct = (id: number) => {
+    return $products.find((product) => product.id === id);
   };
 
   const getTotalPrice = () => {
     let totalPrice: number = 0;
     $cartItems.forEach((item: CartItem) => {
-      const product: Product | undefined = getProduct(item);
+      const product: Product | undefined = getProduct(item.id);
       if (product) totalPrice += (product?.price ?? 0) * item.quantity;
     });
     return totalPrice;
@@ -39,7 +39,7 @@
   {#if $cartItems.length > 0}
     <div class="mt-5 space-y-5">
       {#each $cartItems as item}
-        {@const product = getProduct(item)}
+        {@const product = getProduct(item.id)}
         <div class="p-5 border-[0.5px] rounded-lg shadow-md flex space-x-10">
           <img
             class="h-32 w-40 object-contain"
