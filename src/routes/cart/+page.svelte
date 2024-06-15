@@ -1,5 +1,6 @@
 <script lang="ts">
   import { cartItems, products } from "$lib/stores/product";
+  import toast from "svelte-french-toast";
 
   const getProduct = (item: CartItem) => {
     return $products.find((product) => product.id === item.id);
@@ -12,6 +13,15 @@
       if (product) totalPrice += (product?.price ?? 0) * item.quantity;
     });
     return totalPrice;
+  };
+
+  const deleteProductFromCart = (id: number) => {
+    try {
+      $cartItems = $cartItems.filter((item: CartItem) => item.id !== id);
+      toast.success("Item successfully deleted from cart");
+    } catch (e) {
+      toast.error("Something went wrong");
+    }
   };
 </script>
 
@@ -37,9 +47,16 @@
             alt="" />
           <div>
             <h2 class="text-lg font-medium">{product?.title ?? ""}</h2>
-            <p class="font-semibold">
+            <p class="font-semibold mt-2">
               ₹{(product?.price ?? 0) * item.quantity}
             </p>
+            <div class="mt-5 flex space-x-3">
+              <button
+                on:click={() => deleteProductFromCart(item.id)}
+                class="px-4 py-1 rounded-md bg-red-100 text-red-500 font-medium">
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       {/each}
