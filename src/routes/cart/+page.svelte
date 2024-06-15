@@ -48,7 +48,7 @@
           <div>
             <h2 class="text-lg font-medium">{product?.title ?? ""}</h2>
             <p class="font-semibold mt-2">
-              ₹{(product?.price ?? 0) * item.quantity}
+              ₹{product?.price ?? 0}
             </p>
             <div class="mt-5 flex space-x-3">
               <button
