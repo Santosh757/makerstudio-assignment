@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { cartItems } from "$lib/stores/product";
+  import { cartItems, changeQuantity } from "$lib/stores/product";
   import toast from "svelte-french-toast";
 
   let product: Product = $page.data.product;
@@ -9,12 +9,7 @@
     try {
       const cartItem = $cartItems.find((item: CartItem) => item.id === id);
       if (cartItem) {
-        $cartItems = $cartItems.map((item: CartItem) => {
-          if (item.id === id) {
-            item.quantity++;
-          }
-          return item;
-        });
+        changeQuantity(id, true);
       } else {
         $cartItems = [...$cartItems, { id, quantity: 1 }];
       }
