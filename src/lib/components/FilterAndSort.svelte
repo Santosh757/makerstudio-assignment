@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { categories, products } from "$lib/stores/product";
+  import { categories, paginate, products } from "$lib/stores/product";
 
   let selectedCategory: Category;
   let selectedSortOption: string;
@@ -12,14 +12,17 @@
     const result = await response.json();
     if (result) {
       $products = result;
+      paginate($products);
     }
   };
 
   const sortProducts = () => {
     if (selectedSortOption === "price-asc") {
-      $products = $products.sort((a: any, b: any) => a.price - b.price);
+      $products = $products.sort((a: Product, b: Product) => a.price - b.price);
+      paginate($products);
     } else if (selectedSortOption === "price-desc") {
-      $products = $products.sort((a: any, b: any) => b.price - a.price);
+      $products = $products.sort((a: Product, b: Product) => b.price - a.price);
+      paginate($products);
     } else return;
   };
 </script>
