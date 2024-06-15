@@ -1,22 +1,27 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import { cartItems } from "$lib/stores/product";
+  import toast from "svelte-french-toast";
 
   let product: Product = $page.data.product;
 
   const addToCart = (id: number) => {
-    const cartItem = $cartItems.find((item: CartItem) => item.id === id);
-    if (cartItem) {
-      $cartItems = $cartItems.map((item: CartItem) => {
-        if (item.id === id) {
-          item.quantity++;
-        }
-        return item;
-      });
-    } else {
-      $cartItems = [...$cartItems, { id, quantity: 1 }];
+    try {
+      const cartItem = $cartItems.find((item: CartItem) => item.id === id);
+      if (cartItem) {
+        $cartItems = $cartItems.map((item: CartItem) => {
+          if (item.id === id) {
+            item.quantity++;
+          }
+          return item;
+        });
+      } else {
+        $cartItems = [...$cartItems, { id, quantity: 1 }];
+      }
+      toast.success("Item added in the cart successfully");
+    } catch (error) {
+      toast.error("Something went wrong while adding the item in the cart");
     }
-    console.log($cartItems);
   };
 </script>
 
