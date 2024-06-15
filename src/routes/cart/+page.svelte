@@ -1,18 +1,21 @@
 <script lang="ts">
-  import { cartItems, products } from "$lib/stores/product";
+  import { cartItems, changeQuantity, products } from "$lib/stores/product";
+  import { afterUpdate } from "svelte";
   import toast from "svelte-french-toast";
+
+  let totalPrice: number = 0;
 
   const getProduct = (id: number) => {
     return $products.find((product) => product.id === id);
   };
 
   const getTotalPrice = () => {
-    let totalPrice: number = 0;
+    let price: number = 0;
     $cartItems.forEach((item: CartItem) => {
       const product: Product | undefined = getProduct(item.id);
-      if (product) totalPrice += (product?.price ?? 0) * item.quantity;
+      if (product) price += (product?.price ?? 0) * item.quantity;
     });
-    return totalPrice;
+    totalPrice = price;
   };
 
   const deleteProductFromCart = (id: number) => {
@@ -23,6 +26,10 @@
       toast.error("Something went wrong");
     }
   };
+
+  afterUpdate(() => {
+    getTotalPrice();
+  });
 </script>
 
 <div class="pt-20 pb-10">
@@ -31,7 +38,7 @@
     {#if $cartItems.length > 0}
       <p class="text-xl">
         Subtotal: <span class="font-semibold">
-          ₹{Number(getTotalPrice()).toFixed(2)}
+          ₹{Number(totalPrice).toFixed(2)}
         </span>
       </p>
     {/if}
@@ -51,6 +58,36 @@
               ₹{product?.price ?? 0}
             </p>
             <div class="mt-5 flex space-x-3">
+              <div class="flex items-center space-x-2">
+                <button
+                  on:click={() => changeQuantity(item.id, true)}
+                  class="p-1 border rounded-md">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    class="size-5">
+                    <path
+                      d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+                  </svg>
+                </button>
+                <p>{item.quantity ?? 0}</p>
+                <button
+                  on:click={() => changeQuantity(item.id, false)}
+                  disabled={!(item.quantity > 1)}
+                  class="p-1 border rounded-md disabled:bg-gray-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    class="size-5">
+                    <path
+                      fill-rule="evenodd"
+                      d="M4 10a.75.75 0 0 1 .75-.75h10.5a.75.75 0 0 1 0 1.5H4.75A.75.75 0 0 1 4 10Z"
+                      clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
               <button
                 on:click={() => deleteProductFromCart(item.id)}
                 class="px-4 py-1 rounded-md bg-red-100 text-red-500 font-medium">
