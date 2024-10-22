@@ -27,7 +27,8 @@
   };
 </script>
 
-<div class="flex space-x-10">
+<div
+  class="flex flex-col md:flex-row md:space-x-10 space-y-3 md:space-y-0 text-sm md:text-base">
   <label class="flex items-center space-x-2" for="filter">
     <span>Filter by category :</span>
     <div class="px-2 py-1 border rounded-md">

@@ -20,14 +20,15 @@
   };
 </script>
 
-<div class="pt-20 pb-10 flex space-x-24">
-  <section class="w-1/3">
+<div
+  class="pt-20 pb-10 flex flex-col lg:flex-row lg:space-x-16 xl:space-x-24 space-y-8 lg:space-y-0">
+  <section class="lg:w-1/3">
     <img
-      class="w-full h-full max-h-96 object-contain"
+      class="w-full h-40 md:h-60 lg:h-full max-h-96 object-contain"
       src={product.image}
       alt="" />
   </section>
-  <section class="flex-1">
+  <section class="lg:flex-1">
     <h3 class="capitalize font-medium text-gray-500">{product.category}</h3>
     <h2 class="text-2xl font-semibold">{product.title}</h2>
     <p class="text-gray-700 mt-2">{product.description}</p>
